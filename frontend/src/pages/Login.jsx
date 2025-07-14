@@ -1,18 +1,26 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
+import axios from "axios"
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
-  const submitHandler = (e)=>{
+  const submitHandler =async (e)=>{
     e.preventDefault()
     const userData = {
       email,
       password
     }
-    console.log(userData)
+    const res  = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,userData)
+    if(res.status ===200){
+      localStorage.setItem("token", res.data.token)
+      setEmail("")
+      setPassword("")
+      navigate("/home")
+    }
   }
 
 

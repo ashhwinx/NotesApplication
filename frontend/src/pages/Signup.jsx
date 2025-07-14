@@ -1,28 +1,31 @@
 // pages/Signup.jsx
 import React , {useState} from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
+import axios from "axios"
 
 const Signup = () => {
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
 
-
-    const submitHandler = (e)=>{
+    const submitHandler = async(e)=>{
       e.preventDefault()
       const userData = {
         fullName,
         email,
         password
+      } 
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,userData)
+      if(res.status === 200){
+        setEmail("")
+        setFullName("")
+        setPassword("")
+        navigate("/")
       }
-      console.log(userData)
 
-    
-      
     }
-
-
 
   return (
     <div className="flex items-center justify-center h-screen bg-purple-950 px-4">
